@@ -117,10 +117,14 @@ const Logout = async()=>{
 
 const VerifyCode= async()=>{
   setLoader(true)
-  await http.post('hv-verify-email' , code)
+  await http.post('hv-verify-email' , {otp: code})
   .then(res=>{
     setLoader(false)
     setCode(res.data)
+       if(res.data.verify){
+        location.reload()
+
+       }
        console.log(res.data)
   })
   .catch(err=>{
@@ -244,7 +248,7 @@ const VerifyCode= async()=>{
   <div className="flex flex-col justify-center items-center mt-4">
  
 <div className="flex items-center justify-between px-1  shadow-sm border border-slate-800 w-2/3 ">
-  <MdMailLock className='text-3xl text-green-500 '/> <input onchange  type="number" className='py-2 px-3 border-none w-full outline-none'disabled={loader && true} placeholder="Type otp code to verify"/> <button  className='px-3 py-2 rounded-lg bg-green-400 text-white  '  onClick={VerifyCode}>{loader? <BiLoader className='text-2xl animate-spin'/> : "Verify"}</button>
+  <MdMailLock className='text-3xl text-green-500 '/> <input onChange={(e)=>{setCode(e.target.value)}}  type="number" className='py-2 px-3 border-none w-full outline-none'disabled={loader && true} placeholder="Type otp code to verify"/> <button  className='px-3 py-2 rounded-lg bg-green-400 text-white  '  onClick={VerifyCode}>{loader? <BiLoader className='text-2xl animate-spin'/> : "Verify"}</button>
 </div>
 </div>
 
