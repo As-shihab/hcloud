@@ -120,6 +120,7 @@ const VerifyCode= async()=>{
   await http.post('hv-verify-email' , {otp: code})
   .then(res=>{
     setLoader(false)
+
     setCode(res.data)
        if(res.data.verify){
         location.reload()
@@ -131,6 +132,20 @@ const VerifyCode= async()=>{
     console.log(err)
     setLoader(false)
   })
+}
+
+// ------------- delete ac
+
+const DeleteAc= async()=>{
+ const isok= window.prompt("Type 'Ok' to delete ");
+       isok.toLowerCase()
+
+       if(isok==="ok"){
+      await http.delete('del-hv-ac')
+      .then(res=>{
+        console.log(res.data)
+      }).catch(err=>{console.log(err.message)})
+       }
 }
 
   return (
@@ -233,7 +248,7 @@ const VerifyCode= async()=>{
 <div className='text-center w-full flex justify-center items-center  flex-col'>
 <div className="flex items-center w-full  justify-between">
 <label  className='flex items-center text-green-500 gap-1'><MdMailLock className='text-2xl text-green-500'/> Verify email</label> 
-<label className='text-green-500'>{issent.msg&&issent.msg}</label>
+<label className='text-green-500'>{issent.msg?issent.msg:code.msg?code.msg:null}</label>
 <label onClick={()=>{setVerify(false)}} className='flex items-center border border-slate-800 rounded-lg  cursor-pointer px-2 py-1  gap-1'><CgClose className='text-2xl '/></label> 
 </div>
   <MdFaceUnlock className='text-9xl my-4 animate-pulse text-sky-500'/>
@@ -262,7 +277,7 @@ const VerifyCode= async()=>{
 }
 
 <div className="w-full gap-2 flex mt-4 justify-center items-center text-center">
-<button  className='flex items-center border border-slate-800 rounded-lg shadow-sm cursor-pointer px-2 py-1 text-red-500 gap-1'><RiDeleteBin6Line className='text-2xl text-red-500'/>Delete account</button> 
+<button onClick={DeleteAc} className='flex items-center border border-slate-800 rounded-lg shadow-sm cursor-pointer px-2 py-1 text-red-500 gap-1'><RiDeleteBin6Line className='text-2xl text-red-500'/>Delete account</button> 
 <button onClick={Logout} className='flex items-center border border-slate-800 rounded-lg shadow-sm cursor-pointer px-2 py-1 text-green-500 gap-1'><BiLogOut className='text-2xl text-green-500'/>LogOut</button> 
 </div>
 </div>
